@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Home
 app.get("/", (req, res) => {
   res.json({
     success: true,
@@ -15,7 +14,6 @@ app.get("/", (req, res) => {
   });
 });
 
-// Health check
 app.get("/api/status", (req, res) => {
   res.json({
     success: true,
@@ -24,7 +22,6 @@ app.get("/api/status", (req, res) => {
   });
 });
 
-// Verify Channel
 app.post("/api/channel", (req, res) => {
   const { channelLink } = req.body;
 
@@ -42,14 +39,13 @@ app.post("/api/channel", (req, res) => {
     });
   }
 
-  res.json({
+  return res.json({
     success: true,
     message: "Channel link received",
     channelLink
   });
 });
 
-// Prepare reactions
 app.post("/api/reactions", (req, res) => {
   const { channelLink, reactions } = req.body;
 
@@ -60,7 +56,14 @@ app.post("/api/reactions", (req, res) => {
     });
   }
 
-  res.json({
+  return res.json({
     success: true,
     message: "Reaction request received",
-   
+    channelLink,
+    reactions: reactions || {}
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Backend running on port ${PORT}`);
+});
